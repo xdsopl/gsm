@@ -1,0 +1,26 @@
+
+gsm - encode and decode message in GSM 03.38
+Written in 2014 by <Ahmet Inan> <xdsopl@googlemail.com>
+To the extent possible under law, the author(s) have dedicated all copyright and related and neighboring rights to this software to the public domain worldwide. This software is distributed without any warranty.
+You should have received a copy of the CC0 Public Domain Dedication along with this software. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
+
+I really just wanted to know how much credit i had ony my SIM ..
+My mobile surfstick can only do the default 7-bit GSM alphabet and those 7-bit chars are packed together to save 1 bit per char.
+So you need to do some unpacking to get to your 8-bit ASCII char.
+
+Also read GSM 03.38:
+http://en.wikipedia.org/wiki/GSM_03.38
+
+Example:
+
+# echo -n "*100#" | ./ascii2gsm
+AA180C3602
+
+# screen /dev/ttyUSB1
+AT+CUSD=1,"AA180C3602",15
+OK
++CUSD: 0,"49B41C74ACD3D16171D90D32BBE42072BA0C72CA5DB45CAC76C362B1582C168B0589CB74B9EB4C07E55CB618A85897BF1B",15
+
+# echo -n "49B41C74ACD3D16171D90D32BBE42072BA0C72CA5DB45CAC76C362B1582C168B0589CB74B9EB4C07E55CB618A85897BF1B" | ./gsm2ascii
+Ihr Guthaben f.r die Nr.49157XXXXXXXX betr.gt 9.61 Euro
+
