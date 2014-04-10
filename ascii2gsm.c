@@ -36,23 +36,22 @@ int ascii2gsm(int c)
 
 int main()
 {
-	for (int c = getchar(), tmp = 0, bits = 0; c != EOF || bits; c = getchar()) {
-		if (c != EOF) {
-			tmp |= ascii2gsm(c) << bits;
-			bits += 7;
-		} else {
-			if (bits == 1)
-				tmp |= 0x0d << bits;
-			bits = 8;
-		}
+	int tmp = 0, bits = 0;
+	for (int c = getchar(); c != EOF; c = getchar()) {
+		tmp |= ascii2gsm(c) << bits;
+		bits += 7;
 		if (bits >= 8) {
-			int lsb = base16(tmp & 15);
-			int msb = base16((tmp >> 4) & 15);
-			putchar(msb);
-			putchar(lsb);
+			putchar(base16((tmp >> 4) & 15));
+			putchar(base16(tmp & 15));
 			tmp >>= 8;
 			bits -= 8;
 		}
+	}
+	if (bits == 1)
+		tmp |= 0x0d << 1;
+	if (bits) {
+		putchar(base16((tmp >> 4) & 15));
+		putchar(base16(tmp & 15));
 	}
 	return 0;
 }
